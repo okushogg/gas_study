@@ -1,0 +1,10 @@
+function getInfo() {
+   const ss = SpreadsheetApp.getActiveSpreadsheet();
+   const sheet = ss.getSheetByName('timesheet');
+   const user_id = sheet.getRange(2,1);
+   const date = sheet.getRange(2,2);
+   const punch_in = sheet.getRange(2,3);
+   const punch_out = sheet.getRange(2,4);
+   const array = [user_id.getValue(), date.getValue(), punch_in.getValue(), punch_out.getValue()];
+   console.log(array);
+ }
