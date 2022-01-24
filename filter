@@ -1,0 +1,10 @@
+function getInfo() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('timesheet');
+  var rows = sheet.getLastRow()-1;
+  var datas = sheet.getRange(2,1,rows,4).getValues();
+  var filter_datas = datas.filter(data => data[0] == 1)
+  const user_timesheet = ss.getSheetByName('1');
+  user_timesheet.getRange(user_timesheet.getLastRow(), user_timesheet.getLastColumn()).setValues(filter_datas);
+
+ }
