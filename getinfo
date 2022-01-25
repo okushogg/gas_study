@@ -1,10 +1,26 @@
 function getInfo() {
-   const ss = SpreadsheetApp.getActiveSpreadsheet();
-   const sheet = ss.getSheetByName('timesheet');
-   const user_id = sheet.getRange(2,1);
-   const date = sheet.getRange(2,2);
-   const punch_in = sheet.getRange(2,3);
-   const punch_out = sheet.getRange(2,4);
-   const array = [user_id.getValue(), date.getValue(), punch_in.getValue(), punch_out.getValue()];
-   console.log(array);
+  const ss = SpreadsheetApp.getActiveSpreadsheet(); //開けているスプレッドシート
+  const userinfo_sheet = ss.getSheetByName('user'); //ユーザー情報シート
+  const userinfo_rows = userinfo_sheet.getLastRow()-1; //ユーザー情報のシートの最後の行を取得
+  const userinfo_range = userinfo_sheet.getRange(2,1,userinfo_rows,1); // ユーザー情報シートA列の全情報を選択
+  const user_id = userinfo_range.getValues(); //ユーザーIDを全て取得
+ 
+//  const check_trancefar = sheet.getRange(2, 5).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+ //ユーザーID各シートに情報を転記
+ for(let i = 0; i <= user_id.length; i++ ) {
+    const sheet = ss.getSheetByName('timesheet'); //出退勤の情報が入っているメインシート
+    const rows = sheet.getLastRow()-1; //１行目を除き最後の行
+    const datas = sheet.getRange(2,1,rows,4).getValues(); //A列１行目〜D列最終行のデータを取得
+    const filter_datas = datas.filter(data => data[0] == user_id[i]); //A列のデータがユーザーIDと一致しているものを取得
+    const user_timesheet = ss.getSheetByName(user_id[i]); //ユーザーごとの勤怠シート
+    const lastRow = user_timesheet.getLastRow(); //ユーザーごとの勤怠シート最終行
+    user_timesheet.getRange(lastRow+1, 1, filter_datas.length, filter_datas[0].length).setValues(filter_datas); //最終行の次の行にA列からデータを入れる
+ }
+
+
+
+  // for(let i =1; i <= user_id.length; i++){
+  //  Logger.log(i);
+  // }
+
  }
