@@ -1,10 +1,12 @@
 function check_data() {
   const ss = SpreadsheetApp.getActiveSpreadsheet(); //開けているスプレッドシート
   const sheet = ss.getSheetByName('timesheet'); //出退勤の情報が入っているメインシート
-  const lastRow = sheet.getLastRow()-1;
   const check_trancefar = sheet.getRange(2, 5).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow(); //転記チェックに「済」がある最終行を取得
-  const range = sheet.getRange(check_trancefar,5,lastRow,1);
+  const lastRow = sheet.getRange(2, 2).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+  const range = sheet.getRange(check_trancefar+1,5,lastRow-check_trancefar,1);
   range.setValue('済');
-  // Logger.log(check_trancefar);
+  Logger.log(lastRow);
+  Logger.log(check_trancefar);
+
   // const datas = sheet.getRange(2,1,check_trancefar,4).getValues(); //A列１行目〜D列最終行のデータを取得
 }
