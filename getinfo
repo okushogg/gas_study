@@ -8,16 +8,20 @@ function getInfo() {
   // const rows = sheet.getLastRow()-1; //１行目を除き最後の行
   const check_trancefar = sheet.getRange(2, 5).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow(); //転記チェックに「済」がある最終行を取得
   const lastRow = sheet.getRange(2, 1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow(); //1列目の最後の行を取得
+  Logger.log(lastRow);
+  Logger.log(check_trancefar);
   const range = sheet.getRange(check_trancefar+1,1,lastRow,5);
  
 //  const check_trancefar = sheet.getRange(2, 5).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
  //ユーザーID各シートに情報を転記
- for(let i = 0; i <= user_id.length-1; i++ ) {
+ for(let i of user_id ) {
+    Logger.log(i)
     const datas = range.getValues();
-    const filter_datas = datas.filter(data => data[0] == user_id[i]); //A列のデータがユーザーIDと一致しているものを取得
+    Logger.log(datas);
+    const filter_datas = datas.filter(data => data[0] == i); //A列のデータがユーザーIDと一致しているものを取得
     Logger.log(filter_datas);
     if(filter_datas){
-      const user_timesheet = ss.getSheetByName(user_id[i]); //ユーザーごとの勤怠シート
+      const user_timesheet = ss.getSheetByName(i); //ユーザーごとの勤怠シート
       const user_lastRow = user_timesheet.getLastRow(); //ユーザーごとの勤怠シート最終行
       user_timesheet.getRange(user_lastRow+1, 1, filter_datas.length, filter_datas[0].length).setValues(filter_datas); //最終行の次の行にA列からデータを入れる
       Logger.log('hit')
